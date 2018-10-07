@@ -55,11 +55,7 @@ public class Playscreen implements Screen, InputProcessor{
 		debugR = new Box2DDebugRenderer(); // debugRenderer für die Anzeige der Boxen in Box2d
 		
 		new WeltErstellen(welt,tiledMap); //Klasse, um die Physics der Objekte zu generieren 
-		
-		
-		//hotpotato1 = new HotPotato(); //Noch nicht so weit
-		
-		
+
 		spieler1 = new FIGUR(welt, this); //Um den Atlas zu laden (siehe unten)
 		
 	}

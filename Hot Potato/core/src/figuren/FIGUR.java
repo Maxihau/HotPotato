@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -110,13 +111,18 @@ public class FIGUR extends Sprite{
 		
 		body = world.createBody(bodyDef);
 		
+		CircleShape shape = new CircleShape();
+		shape.setRadius(25/spiel.PPM);
 		
+		/*
 		PolygonShape shape = new PolygonShape(); //box für Spieler
 		shape.setAsBox(13/spiel.PPM, 24/spiel.PPM); //Größe der Kollisionsbox
-		
+		*/
 		FixtureDef fdef = new FixtureDef(); //Definition der Box für die Kollision
 		
 		fdef.shape = shape; 
+		body.createFixture(fdef);
+		
 		fdef.density = 1f; // Masse der Figur; Gewicht der Figur
 		
 		Fixture fixture = body.createFixture(fdef);
