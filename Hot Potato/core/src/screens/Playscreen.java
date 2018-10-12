@@ -3,6 +3,7 @@ package screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -15,15 +16,19 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import entities.B2dSteeringEntity;
 import entities.HotPotato;
-import figuren.FIGUR;
-import tools.WeltErstellen;
+import entities.B2dSteeringEntity;
+import figuren.Player;
+import tools.CreateWorld;
 
 public class Playscreen implements Screen, InputProcessor{
 
-	FIGUR spieler1;
+	Player spieler1;
 	HotPotato hotpotato1;
 	HPotato spiel;
+	B2dSteeringEntity kiSteuerung;
+	Player kiKoerper;
 	
     TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
@@ -32,6 +37,7 @@ public class Playscreen implements Screen, InputProcessor{
 	World welt;
 	Box2DDebugRenderer debugR;
 	Body koerper;
+	B2dSteeringEntity entity, target;
 	
 	private TextureAtlas atlas;
 	
@@ -54,9 +60,22 @@ public class Playscreen implements Screen, InputProcessor{
 		welt = new World (new Vector2(0, -10f),true); //Beschleunigungen x,y Positionen, true = nicht bewegende Figuren werden ignoriert, erst wenn, dann gilt die Besdchleunigungen
 		debugR = new Box2DDebugRenderer(); // debugRenderer für die Anzeige der Boxen in Box2d
 		
-		new WeltErstellen(welt,tiledMap); //Klasse, um die Physics der Objekte zu generieren 
+		new CreateWorld(welt,tiledMap); //Klasse, um die Physics der Objekte zu generieren 
 
-		spieler1 = new FIGUR(welt, this); //Um den Atlas zu laden (siehe unten)
+		spieler1 = new Player(welt, this); //Um den Atlas zu laden (siehe unten)
+		kiKoerper = new Player(welt,this);
+		
+		entity = new B2dSteeringEntity(spieler1.getBody(),10);
+		target = new B2dSteeringEntity(kiKoerper.getBody(),10);
+		
+		
+		//Allgemeine Einstellung für SteeringBehavior
+		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(entity, target) 
+				.setTimeToTarget(0.1f) 
+				.setArrivalTolerance(0.001f) 
+				.setDecelerationRadius(3);
+			entity.setSteeringBehavior(arriveSB);
+		
 		
 	}
 	
@@ -96,6 +115,7 @@ public class Playscreen implements Screen, InputProcessor{
 		
 		spiel.batch.begin();
 		spieler1.draw(spiel.batch);
+		kiKoerper.draw(spiel.batch);
 		spiel.batch.end();
 		
 		welt.step(Gdx.graphics.getDeltaTime(), 6, 2);

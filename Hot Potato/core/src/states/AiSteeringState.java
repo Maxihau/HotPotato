@@ -23,7 +23,7 @@ public class AiSteeringState {
 	HPotato spiel;
 	
 	
-	AiSteeringState(World world, Playscreen screen) //Playscreen (?)
+	public AiSteeringState(World world, Playscreen screen) //Playscreen (?)
 	{
 		this.world = world;
 		
@@ -45,13 +45,13 @@ public class AiSteeringState {
 		entity.dispose();
 		
 		
-		/*
-		Arrive<Vector2> arriveSB = new Arrive <Vector2> (entity, target)
-				.setTimeToTarget(0.01f)
-				.setArrivalToTolerance(2f)
-				.setDeccelerationRadius(10);
-		entity.setBehavior(arriveSB);		
-		*/
+		
+		
+		
+		
+		
+	
+		
 		
 	}
 
