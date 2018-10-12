@@ -65,16 +65,16 @@ public class Playscreen implements Screen, InputProcessor{
 		spieler1 = new Player(welt, this); //Um den Atlas zu laden (siehe unten)
 		kiKoerper = new Player(welt,this);
 		
-		entity = new B2dSteeringEntity(spieler1.getBody(),10);
-		target = new B2dSteeringEntity(kiKoerper.getBody(),10);
+		target = new B2dSteeringEntity(spieler1.getBody(),10);
+		entity = new B2dSteeringEntity(kiKoerper.getBody(),10);
 		
 		
 		//Allgemeine Einstellung für SteeringBehavior
-		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(entity, target) 
+		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(entity,target) 
 				.setTimeToTarget(0.1f) 
 				.setArrivalTolerance(0.001f) 
-				.setDecelerationRadius(3);
-			entity.setSteeringBehavior(arriveSB);
+				.setDecelerationRadius(0.1f);
+			entity.setBehavior(arriveSB);
 		
 		
 	}
@@ -97,6 +97,7 @@ public class Playscreen implements Screen, InputProcessor{
 	
 	void update(float dt)
 	{
+		entity.update(dt);
 	}
 	
 	@Override

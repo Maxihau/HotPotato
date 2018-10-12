@@ -30,8 +30,8 @@ public class B2dSteeringEntity implements Steerable<Vector2> {
 		this.body = body;
 		this.boundingRadius = boundingRadius;
 		
-		this.maxLinearSpeed = 500;
-		this.maxLinearAcceleration = 5000;
+		this.maxLinearSpeed = 5;
+		this.maxLinearAcceleration = 100;
 		this.maxAngularspeed = 30;
 		this.maxAngularAcceleration = 5;
 		
@@ -39,6 +39,8 @@ public class B2dSteeringEntity implements Steerable<Vector2> {
 		
 		this.steerOutput = new SteeringAcceleration<Vector2>(new Vector2());
 		this.body.setUserData(this);
+		
+		
 	}
 	
 	
@@ -74,7 +76,15 @@ public class B2dSteeringEntity implements Steerable<Vector2> {
 		}
 	}
 	
+	public void setBehavior(SteeringBehavior<Vector2> behavior)
+	{
+		this.behavior = behavior;
+	}
 	
+	public SteeringBehavior<Vector2> getBehavior()
+	{
+		return behavior;
+	}
 	
 	
 	@Override
