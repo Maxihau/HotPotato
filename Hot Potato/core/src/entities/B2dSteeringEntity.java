@@ -46,9 +46,11 @@ public class B2dSteeringEntity implements Steerable<Vector2> {
 	
 	public void update (float delta)
 	{
-		if (behavior!= null)
+		if (behavior!= null) 
 		{
-			behavior.calculateSteering(steerOutput); //Wie schnell darf er gehen? Wo geht er hin?
+			behavior.calculateSteering(steerOutput); 
+			//Berechnet die Aktionen
+			//Wie schnell darf er gehen? Wo geht er hin? Diese Fragen werden hier beantwortet
 			ApplySteering(delta);
 		}
 	}
@@ -59,19 +61,33 @@ public class B2dSteeringEntity implements Steerable<Vector2> {
 		
 		if(!steerOutput.linear.isZero())
 		{
-			Vector2 force = steerOutput.linear.scl(delta);
+			Vector2 force = steerOutput.linear.scl(delta); 
+			//Aktionen verlaufen syxnchronisiert mit den anderen Bewegungen
+			//(Durch das globale Delta, die auch die Frames per Second sind)
 			body.applyForceToCenter(force, true);
+			anyAccelerations = true;
+		}
+		
+		if(steerOutput.angular != 0)
+		{
+			body.applyTorque(steerOutput.angular*delta, true);
 			anyAccelerations = true;
 		}
 		
 		if (anyAccelerations)
 		{
+			
 			Vector2 velocity = body.getLinearVelocity();
 			float currentSpeedSquare = velocity.len2();
 			if(currentSpeedSquare > maxLinearSpeed * maxLinearSpeed)
 			{
 				body.setLinearVelocity(velocity.scl(maxLinearSpeed / (float) Math.sqrt(currentSpeedSquare)));
 				
+			}
+			
+			if(body.getAngularVelocity() > maxAngularspeed)
+			{
+				body.setAngularVelocity(maxAngularspeed);
 			}
 		}
 	}

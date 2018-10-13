@@ -21,7 +21,7 @@ import screens.HPotato;
 import screens.Playscreen;
 public class Player extends Sprite{
 	
-	boolean laufen;
+	boolean RUNNING;
 	boolean ducken;
 	boolean istAufPlattform;
 	
@@ -35,30 +35,34 @@ public class Player extends Sprite{
 	
 	HPotato spiel;
 	
-	private TextureRegion figurStehen;
-	public enum State {SPRINGEN,STEHEN,LAUFEN, FALLEN};
+	private TextureRegion figurSTANDING;
+	public enum State {JUMPING,STANDING,RUNNING, FALLING};
 	public State currentState;
 	public State previousState;
-	private Animation<TextureRegion> figurLaufen;
-	private Animation<TextureRegion> figurSpringen;
+	private Animation<TextureRegion> playerRUNNING;
+	private Animation<TextureRegion> playerJUMPING;
 	private float stateTimer;
-	private boolean laufenRechts;
+	private boolean RUNNINGRechts;
 	private TextureRegion region;
 	private boolean besitzBombe;
 	
 	public Player(World world,Playscreen screen)
 	{
-		super(screen.getAtlas().findRegion("FigurLaufenRechts")); 
+		
+		
+		super (screen.getAtlas().findRegion("FigurLaufenRechts"));
+
 		//super der Sprite Klasse,die nach aus einer Textureregion eine Sprite erstellt (Spart Speicher)
 		//Sucht nach der Region, die den Namen hat
 		//Siehe txt Datei vom Texturepacker
 		
+		
 		this.world = world;
-		currentState = State.STEHEN;
-		previousState = State.STEHEN;
+		currentState = State.STANDING;
+		previousState = State.STANDING;
 		stateTimer = 0;
-		laufenRechts = true;
-		region = figurStehen;
+		RUNNINGRechts = true;
+		region = figurSTANDING;
 		
 		
 		Array<TextureRegion> frames = new Array <TextureRegion>();
@@ -67,7 +71,7 @@ public class Player extends Sprite{
 		for (int i = 1;i <3;i++) {
 			frames.add(new TextureRegion(getTexture(), i*50+i*1,0,50,50)); // 
 		}
-		figurLaufen = new Animation<TextureRegion>(0.1f,frames);
+		playerRUNNING = new Animation<TextureRegion>(1f,frames);
 		frames.clear();
 		
 		//Frames,um die Bewegung einer Figur darstellen zu können
@@ -78,16 +82,16 @@ public class Player extends Sprite{
 		{
 			frames.add(new TextureRegion(getTexture(), 305+i*50,0,50,50));
 		}
-		figurSpringen = new Animation<TextureRegion>(0.1f,frames);
+		playerJUMPING = new Animation<TextureRegion>(0.1f,frames);
 		frames.clear();
 		
 		
-		figurStehen = new TextureRegion(getTexture(), 0,0,50,50);
+		figurSTANDING = new TextureRegion(getTexture(), 0,0,50,50);
 		
 		
 		
 		setBounds(0,0,50/spiel.PPM,50/spiel.PPM);
-		setRegion(figurStehen);
+		setRegion(figurSTANDING);
 		
 		setPosition(75,400);
 		bodyDef = new BodyDef();
@@ -129,6 +133,7 @@ public class Player extends Sprite{
 		fdef.density = 1f; // Masse der Figur; Gewicht der Figur
 		
 		Fixture fixture = body.createFixture(fdef);
+		body.setFixedRotation(true);
 		
 		shape.dispose();
 		
@@ -151,12 +156,14 @@ public class Player extends Sprite{
 		}
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && body.getLinearVelocity().x <=3){
-			body.setLinearVelocity(2, 0);
+			body.setLinearVelocity(2,0);
+			
 
 		}
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)&& body.getLinearVelocity().x <=3){
-			body.setLinearVelocity(-2, 0); }
+			body.setLinearVelocity(-2, 0);
+			}
 		}
 	
 	public TextureRegion getFrame (float dt) 
@@ -166,38 +173,38 @@ public class Player extends Sprite{
 		
 		
 		 switch(currentState) {
-		 case SPRINGEN:
-			region = figurSpringen.getKeyFrame(stateTimer,false);
+		 case JUMPING:
+			region = playerJUMPING.getKeyFrame(stateTimer,false);
 			break;
 		
-		 case LAUFEN:
-			region = figurLaufen.getKeyFrame(stateTimer,true); //true für ein Loop
+		 case RUNNING:
+			region = playerRUNNING.getKeyFrame(stateTimer,true); //true für ein Loop
 			break;
 		 
-		 case FALLEN:
-			 region = figurStehen;
+		 case FALLING:
+			 region = figurSTANDING;
 			 break;
 			 
-		 case STEHEN:
-			 region = figurStehen;
+		 case STANDING:
+			 region = figurSTANDING;
 			 break;
 		 default:
-			region = figurStehen;
+			region = figurSTANDING;
 		 }
 		 
 		 
 		
-		 if((body.getLinearVelocity().x <0.2 || !laufenRechts) && !region.isFlipX())
+		 if((body.getLinearVelocity().x <0.2 || !RUNNINGRechts) && !region.isFlipX())
 		 {
 			region.flip(true,false); // x Achse true, y Achse false
-			laufenRechts = false; 
+			RUNNINGRechts = false; 
 		 	}
 		 	else 
 		 	{
-		 		if((body.getLinearVelocity().x > 0.2 || laufenRechts) && region.isFlipX()) 
+		 		if((body.getLinearVelocity().x > 0.2 || RUNNINGRechts) && region.isFlipX()) 
 		 			{
 					 region.flip(true, false);
-					 laufenRechts = true;
+					 RUNNINGRechts = true;
 				 }
 		 	}
 		 	
@@ -216,25 +223,25 @@ public class Player extends Sprite{
 	
 	
 public State getState() {
-		if(body.getLinearVelocity().y>0 || (body.getLinearVelocity().y > 0 && previousState == State.SPRINGEN))	{
+		if(body.getLinearVelocity().y>0 || (body.getLinearVelocity().y > 0 && previousState == State.JUMPING))	{
 			System.out.println(body.getLinearVelocity().y);
-			return State.SPRINGEN;
+			return State.JUMPING;
 			
 			}
 		else if (body.getLinearVelocity().y<0) 
 		{
-			System.out.println("fallen");
-			return State.FALLEN;
+			System.out.println("FALLING");
+			return State.FALLING;
 			
 		}
 		else if (body.getLinearVelocity().x!=0) {
-			System.out.println("laufen");
-			return State.LAUFEN;
+			System.out.println("RUNNING");
+			return State.RUNNING;
 			
 		}
 		else
-			System.out.println("stehen");
-		return State.STEHEN;
+			System.out.println("STANDING");
+		return State.STANDING;
 		
 		}
 
