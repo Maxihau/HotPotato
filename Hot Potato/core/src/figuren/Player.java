@@ -141,6 +141,9 @@ public class Player extends Sprite{
 	}
 	public void updatePlayer(float dt) {
 		
+		// TO-DO: Mit Delta Time die Animation verlangsamen (iwas mit if)
+		
+		
 		System.out.println(body.getPosition().x + " kartoffel "+ body.getPosition().y);
 		
 		setPosition(body.getPosition().x-getWidth()/2, body.getPosition().y-getHeight()/2);

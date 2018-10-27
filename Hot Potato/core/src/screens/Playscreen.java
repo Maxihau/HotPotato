@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import aStarPathFinder.LevelManager;
 import entities.B2dSteeringEntity;
 import entities.HotPotato;
 import entities.B2dSteeringEntity;
@@ -54,6 +55,7 @@ public class Playscreen implements Screen, InputProcessor{
 		spielkamera.setToOrtho(false,w/spiel.PPM,h/spiel.PPM); //false --> Y Achse nach oben
 		spielkamera.update(); //Spielkamera wird geupdated
 		tiledMap = new TmxMapLoader().load("Karte.tmx"); //Karte laden mit Map loader
+		LevelManager.loadLevel(tiledMap);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1/spiel.PPM); //Karte in den Renderer speichern
 		tiledMapRenderer.setView(spielkamera); //Ansicht der Kamera in dem Renderer
 		
