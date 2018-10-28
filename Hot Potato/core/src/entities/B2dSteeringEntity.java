@@ -1,19 +1,25 @@
 package entities;
 
 import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.ai.steer.Limiter;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.utils.Location;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
-
+import aStarPathFinder.GraphPathImp;
+import aStarPathFinder.LevelManager;
+import aStarPathFinder.Node;
 import utils.SteeringUtils;
 
 
-public class B2dSteeringEntity implements Steerable<Vector2> {
+public class B2dSteeringEntity implements Steerable<Vector2>, Telegraph{
 
 	Body body;
 	boolean tagged;
@@ -25,13 +31,19 @@ public class B2dSteeringEntity implements Steerable<Vector2> {
 	SteeringAcceleration<Vector2> steerOutput; // Enthält die Aktionen, die die KI ausführt (Bewegung in X/Y Richtung)
 	
 	
+	
+	
+	
+
+	
+	
 	public B2dSteeringEntity(Body body, float boundingRadius)
 	{
 		this.body = body;
 		this.boundingRadius = boundingRadius;
 		
-		this.maxLinearSpeed = 5;
-		this.maxLinearAcceleration = 100;
+		this.maxLinearSpeed = 10;
+		this.maxLinearAcceleration = 150;
 		this.maxAngularspeed = 30;
 		this.maxAngularAcceleration = 5;
 		
@@ -39,6 +51,14 @@ public class B2dSteeringEntity implements Steerable<Vector2> {
 		
 		this.steerOutput = new SteeringAcceleration<Vector2>(new Vector2());
 		this.body.setUserData(this);
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 	}
@@ -238,6 +258,15 @@ public class B2dSteeringEntity implements Steerable<Vector2> {
 	public void setSteeringBehavior(Arrive<Vector2> arriveSB) {
 		// TODO Auto-generated method stub
 		this.behavior = arriveSB;
+	}
+
+
+
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	

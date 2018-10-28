@@ -46,6 +46,9 @@ public class Player extends Sprite{
 	private TextureRegion region;
 	private boolean besitzBombe;
 	
+	int i = 0;
+	
+	
 	public Player(World world,Playscreen screen)
 	{
 		
@@ -93,7 +96,17 @@ public class Player extends Sprite{
 		setBounds(0,0,50/spiel.PPM,50/spiel.PPM);
 		setRegion(figurSTANDING);
 		
+		
+		if(i == 0)
+		{
 		setPosition(75,400);
+		i++;
+		}
+		else
+		{
+			setPosition(200,500);
+			
+		}
 		bodyDef = new BodyDef();
 		FigurErstellen();
 		
@@ -144,7 +157,7 @@ public class Player extends Sprite{
 		// TO-DO: Mit Delta Time die Animation verlangsamen (iwas mit if)
 		
 		
-		System.out.println(body.getPosition().x + " kartoffel "+ body.getPosition().y);
+		//System.out.println(body.getPosition().x + " kartoffel "+ body.getPosition().y);
 		
 		setPosition(body.getPosition().x-getWidth()/2, body.getPosition().y-getHeight()/2);
 		//Schnittpunkt der X- und Y-Achse der Figur ist im Mittelpunkt (!! Nicht in einer Ecke!!)
@@ -227,23 +240,23 @@ public class Player extends Sprite{
 	
 public State getState() {
 		if(body.getLinearVelocity().y>0 || (body.getLinearVelocity().y > 0 && previousState == State.JUMPING))	{
-			System.out.println(body.getLinearVelocity().y);
+			//System.out.println(body.getLinearVelocity().y);
 			return State.JUMPING;
 			
 			}
 		else if (body.getLinearVelocity().y<0) 
 		{
-			System.out.println("FALLING");
+			//System.out.println("FALLING");
 			return State.FALLING;
 			
 		}
 		else if (body.getLinearVelocity().x!=0) {
-			System.out.println("RUNNING");
+			//System.out.println("RUNNING");
 			return State.RUNNING;
 			
 		}
 		else
-			System.out.println("STANDING");
+			//System.out.println("STANDING");
 		return State.STANDING;
 		
 		}

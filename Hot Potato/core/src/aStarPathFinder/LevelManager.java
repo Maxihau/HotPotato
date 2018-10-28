@@ -1,7 +1,9 @@
 package aStarPathFinder;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 public class LevelManager {
 public static int lvlTileWidth;
@@ -13,12 +15,16 @@ public static int tilePixelHeight;
 public static TiledMap tiledMap;
 public static GraphImp graph;
 
-public static void loadLevel(TiledMap map)
+
+
+
+
+public static void loadLevel(String fileName)
 {
 	
 	//Properties (Eigentlich: Eigentschaften der Karte) werden gespeichert
 	
-	tiledMap = map;
+	tiledMap = new TmxMapLoader().load(fileName);
 	
 	MapProperties properties = tiledMap.getProperties();
 	lvlTileWidth = properties.get("width",Integer.class);
@@ -28,7 +34,19 @@ public static void loadLevel(TiledMap map)
 	lvlPixelWidth = lvlTileWidth * tilePixelWidth;
 	lvlPixelHeight = lvlTileHeight * tilePixelHeight;
 	
+	
+	
 	graph = GraphGenerator.generateGraph(tiledMap);
 	
+	Gdx.app.log("baum","baummm ");
+	
+	
 	}
+
+
+
+public TiledMap getMap() {
+
+	return tiledMap;
+}
 }

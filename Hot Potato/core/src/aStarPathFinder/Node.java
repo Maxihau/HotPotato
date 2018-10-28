@@ -4,7 +4,7 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.utils.Array;
 
-public class Node implements IndexedGraph<Node>{
+public class Node{
 
 	
 	//Beziehungen zwischen den einzelnen Knoten
@@ -41,24 +41,16 @@ public class Node implements IndexedGraph<Node>{
 		public static final int REGULAR = 1;
 	}
 	
+	public int getIndex()
+	{
+		return index;
+	}
 	
-	@Override
-	public Array<Connection<Node>> getConnections(Node fromNode) {
-		// TODO Auto-generated method stub
+	public Array<Connection<Node>> getConnections()
+	{
 		return connections;
 	}
 
-	@Override
-	public int getIndex(Node node) {
-		// TODO Auto-generated method stub
-		return index;
-	}
-
-	@Override
-	public int getNodeCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 
 }

@@ -6,12 +6,28 @@ import com.badlogic.gdx.utils.Array;
 
 
 public class GraphImp implements IndexedGraph<Node>{
-	private Array<Node> nodes = new Array<Node>();
+	private Array<Node> nodes = new Array<>();
+	int capacity;
 	
-	public GraphImp(Array<Node> nodes)
+	public GraphImp()
 	{
 		super();
 	}
+	
+	public GraphImp(int capacity)
+	{
+		this.capacity = capacity;
+	}
+	
+	public GraphImp(Array<Node> nodes) {
+        this.nodes = nodes;
+
+        // speedier than indexOf()
+        for (int x = 0; x < nodes.size; ++x) {
+            nodes.get(x).index = x;
+        }
+    }
+	
 	/*
 	public GraphImp (int capacity)
 	{
@@ -30,25 +46,31 @@ public class GraphImp implements IndexedGraph<Node>{
 		int modX = x / LevelManager.tilePixelWidth;
 		int modY = y / LevelManager.tilePixelHeight;
 		
+		System.out.println(modX);
+		System.out.println(modY);
+		
 		//Wandelt die Pixel in Tiles (Kacheln) um
 		
 		return nodes.get(LevelManager.lvlTileWidth*modY+ modX);
 	}
+	
+	
 	@Override
 	public Array<Connection<Node>> getConnections(Node fromNode) {
 		// TODO Auto-generated method stub
-		return null;
+		return fromNode.getConnections();
 	}
 	@Override
 	public int getIndex(Node node) {
 		// TODO Auto-generated method stub
-		return 0;
+		return nodes.indexOf(node,true);
 	}
 	@Override
 	public int getNodeCount() {
 		// TODO Auto-generated method stub
-		return 0;
+		return nodes.size;
 	}
+	
 	
 
 	

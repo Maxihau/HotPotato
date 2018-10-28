@@ -7,8 +7,11 @@ import com.badlogic.gdx.utils.Array;
 
 public class GraphGenerator {
 	
+	TiledMap tiledMap;
+	
 	public static GraphImp generateGraph(TiledMap map)
 	{
+		
 		Array<Node> nodes = new Array<Node>();
 		TiledMapTileLayer tiles = (TiledMapTileLayer)map.getLayers().get(0);
 		//Nur dieses Layer??? 

@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import aStarPathFinder.EnemyAgentComponent;
 import aStarPathFinder.LevelManager;
 import entities.B2dSteeringEntity;
 import entities.HotPotato;
@@ -42,6 +43,11 @@ public class Playscreen implements Screen, InputProcessor{
 	
 	private TextureAtlas atlas;
 	
+	EnemyAgentComponent pathFinder;
+	
+	LevelManager levelManager;
+	
+	
 	public Playscreen(HPotato spiel)	//Uebertragung der Eigenschaften der "Hauptklasse (MyGdxGame)" auf diese Klasse (Zum Rendern bsp.)
 	{
 		atlas = new TextureAtlas("Figur.pack");
@@ -54,12 +60,19 @@ public class Playscreen implements Screen, InputProcessor{
 		spielkamera = new OrthographicCamera(); //Für die Ansicht der Kamera
 		spielkamera.setToOrtho(false,w/spiel.PPM,h/spiel.PPM); //false --> Y Achse nach oben
 		spielkamera.update(); //Spielkamera wird geupdated
-		tiledMap = new TmxMapLoader().load("Karte.tmx"); //Karte laden mit Map loader
-		LevelManager.loadLevel(tiledMap);
+		
+		
+		//tiledMap = new TmxMapLoader().load("Karte.tmx"); //Karte laden mit Map loader
+		//LevelManager.loadLevel(tiledMap);
+		
+		levelManager = new LevelManager();
+		levelManager.loadLevel("Karte.tmx");
+		tiledMap = levelManager.getMap();
+		
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1/spiel.PPM); //Karte in den Renderer speichern
 		tiledMapRenderer.setView(spielkamera); //Ansicht der Kamera in dem Renderer
 		
-		welt = new World (new Vector2(0, -10f),true); //Beschleunigungen x,y Positionen, true = nicht bewegende Figuren werden ignoriert, erst wenn, dann gilt die Besdchleunigungen
+		welt = new World (new Vector2(0, -20f),true); //Beschleunigungen x,y Positionen, true = nicht bewegende Figuren werden ignoriert, erst wenn, dann gilt die Besdchleunigungen
 		debugR = new Box2DDebugRenderer(); // debugRenderer für die Anzeige der Boxen in Box2d
 		
 		new CreateWorld(welt,tiledMap); //Klasse, um die Physics der Objekte zu generieren 
@@ -70,12 +83,13 @@ public class Playscreen implements Screen, InputProcessor{
 		target = new B2dSteeringEntity(spieler1.getBody(),10);
 		entity = new B2dSteeringEntity(kiKoerper.getBody(),10);
 		
+		pathFinder = new EnemyAgentComponent(kiKoerper.getBody(),spieler1.getBody());
 		
 		//Allgemeine Einstellung für SteeringBehavior
 		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(entity,target) 
 				.setTimeToTarget(0.1f) 
 				.setArrivalTolerance(0.001f) 
-				.setDecelerationRadius(0.1f);
+				.setDecelerationRadius(1f);
 			entity.setBehavior(arriveSB);
 		
 		
