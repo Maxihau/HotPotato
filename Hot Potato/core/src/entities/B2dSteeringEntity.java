@@ -54,13 +54,6 @@ public class B2dSteeringEntity implements Steerable<Vector2>, Telegraph{
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
 	}
 	
 	
@@ -82,7 +75,7 @@ public class B2dSteeringEntity implements Steerable<Vector2>, Telegraph{
 		if(!steerOutput.linear.isZero())
 		{
 			Vector2 force = steerOutput.linear.scl(delta); 
-			//Aktionen verlaufen syxnchronisiert mit den anderen Bewegungen
+			//Aktionen verlaufen synchronisiert mit den anderen Bewegungen
 			//(Durch das globale Delta, die auch die Frames per Second sind)
 			body.applyForceToCenter(force, true);
 			anyAccelerations = true;

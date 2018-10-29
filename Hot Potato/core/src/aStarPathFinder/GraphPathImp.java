@@ -8,6 +8,11 @@ import com.badlogic.gdx.utils.Array;
 public class GraphPathImp implements GraphPath<Node>{
 	private Array<Node> nodes = new Array<Node>();
 
+	public Node removeIndex(int index)
+	{
+		return nodes.removeIndex(index);
+	}
+	
 	@Override
 	public Iterator<Node> iterator() {
 		// TODO Auto-generated method stub

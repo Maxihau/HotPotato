@@ -29,6 +29,7 @@ public class HeuristicImp implements Heuristic<Node>{
 		
 		
 		float distance = Math.abs(startX - endX) + Math.abs(startY - endY);
+		
 		return distance;
 	}
 

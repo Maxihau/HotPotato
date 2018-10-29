@@ -12,11 +12,12 @@ public class Node{
 	public int type;
 	public int index;
 
-	
+	/*
 	public Node()
 	{
 		index = Node.Indexer.getIndex(); //Jeder Knoten bekommt einen eigenen Index
 	}
+	*/
 	
 	//Erstellt die Beziehung zwischen den Knoten
 	
@@ -28,6 +29,7 @@ public class Node{
 		
 	}	
 	
+	/*
 	private static class Indexer
 	{
 		private static int index = 0;
@@ -36,6 +38,9 @@ public class Node{
 			return index++;
 		}
 	}
+	*/
+	
+	
 	public static class Type 
 	{
 		public static final int REGULAR = 1;

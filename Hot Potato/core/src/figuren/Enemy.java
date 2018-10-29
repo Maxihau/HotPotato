@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.Array;
 
 import screens.HPotato;
 import screens.Playscreen;
-public class Player extends Sprite{
+public class Enemy extends Sprite{
 	
 	boolean RUNNING;
 	boolean ducken;
@@ -48,12 +48,8 @@ public class Player extends Sprite{
 	
 	int i = 0;
 	
-	//Temporär (Wenn Zeit ist, kann man's eleganter lösen)
-	public float realX;
-	public float realY;
 	
-	
-	public Player(World world,Playscreen screen)
+	public Enemy(World world,Playscreen screen)
 	{
 		
 		
@@ -101,9 +97,10 @@ public class Player extends Sprite{
 		setRegion(figurSTANDING);
 		
 		
+		
+		setPosition(75,200);
 	
-		setPosition(275,400);
-	
+		
 		
 		bodyDef = new BodyDef();
 		FigurErstellen();
@@ -112,22 +109,6 @@ public class Player extends Sprite{
 		
 		
 	}
-	
-	/*
-	public float getrealX()
-	{
-		realX = (body.getPosition().x+getWidth()*2)*spiel.PPM;
-		
-		return realX;
-	}
-	
-	public float getrealY()
-	{
-		realY = (body.getPosition().y+getWidth()*2)*spiel.PPM;
-		
-		return realY;
-	}
-	*/
 	
 	public float getBodyPosX()
 	{
@@ -151,10 +132,6 @@ public class Player extends Sprite{
 		//Static: Von nichts beeinflussbar
 		
 		bodyDef.position.set(getX()/spiel.PPM,getY()/spiel.PPM);
-		//Gdx.app.log("GetX (Player)", " "+getX());
-		//Gdx.app.log("GetY (Player)", " "+getY());
-		// --> Geben "nromale" Werte aus und dann / spiel.PPM
-		//GetX ist normal
 		
 		body = world.createBody(bodyDef);
 		
@@ -178,39 +155,7 @@ public class Player extends Sprite{
 		
 	}
 	public void updatePlayer(float dt) {
-		
-		// TO-DO: Mit Delta Time die Animation verlangsamen (iwas mit if)
-		
-		
-		//System.out.println(body.getPosition().x + " kartoffel "+ body.getPosition().y);
-		
-		
 		setPosition(body.getPosition().x-getWidth()/2, body.getPosition().y-getHeight()/2);
-		
-		
-		//Schnittpunkt der X- und Y-Achse der Figur ist im Mittelpunkt (!! Nicht in einer Ecke!!)
-		//2-(2/2) == 1 --> 1 ist die Hälfte von 2 --> Koordinaten System des Prites fängt in der Mitte an
-		
-		//Gdx.app.log("Position CHarakter X", " " +(body.getPosition().x-getWidth()/2));
-		//Gdx.app.log("Position CHarakter Y", " " +(body.getPosition().y-getWidth()/2));
-		
-		setRegion(getFrame(dt)); // Siehe Methoden
-		//Dient grundsätzlich zum Animieren bzw. Änderung der Sprites
-		
-		
-		if (Gdx.input.isKeyJustPressed(Input.Keys.UP) ){
-			body.applyLinearImpulse(new Vector2(0,0.6f), body.getWorldCenter(), true);
-		}
-		
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && body.getLinearVelocity().x <=3){
-			body.setLinearVelocity(2,0);
-			
-
-		}
-		
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)&& body.getLinearVelocity().x <=3){
-			body.setLinearVelocity(-2, 0);
-			}
 		}
 	
 	public TextureRegion getFrame (float dt) 

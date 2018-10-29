@@ -1,6 +1,7 @@
 package screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
@@ -21,6 +22,7 @@ import aStarPathFinder.LevelManager;
 import entities.B2dSteeringEntity;
 import entities.HotPotato;
 import entities.B2dSteeringEntity;
+import figuren.Enemy;
 import figuren.Player;
 import tools.CreateWorld;
 
@@ -31,6 +33,7 @@ public class Playscreen implements Screen, InputProcessor{
 	HPotato spiel;
 	B2dSteeringEntity kiSteuerung;
 	Player kiKoerper;
+	Enemy enemy;
 	
     TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
@@ -56,7 +59,12 @@ public class Playscreen implements Screen, InputProcessor{
 
 		float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-		
+        
+        //Gdx.app.log("Auflösung Breite"," "+Gdx.graphics.getWidth());
+        //Gdx.app.log("Auflösung Höhe", " "+Gdx.graphics.getHeight());
+		//Auflösung 480x800px
+        
+        
 		spielkamera = new OrthographicCamera(); //Für die Ansicht der Kamera
 		spielkamera.setToOrtho(false,w/spiel.PPM,h/spiel.PPM); //false --> Y Achse nach oben
 		spielkamera.update(); //Spielkamera wird geupdated
@@ -72,18 +80,18 @@ public class Playscreen implements Screen, InputProcessor{
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1/spiel.PPM); //Karte in den Renderer speichern
 		tiledMapRenderer.setView(spielkamera); //Ansicht der Kamera in dem Renderer
 		
-		welt = new World (new Vector2(0, -20f),true); //Beschleunigungen x,y Positionen, true = nicht bewegende Figuren werden ignoriert, erst wenn, dann gilt die Besdchleunigungen
+		welt = new World (new Vector2(0, -10f),true); //Beschleunigungen x,y Positionen, true = nicht bewegende Figuren werden ignoriert, erst wenn, dann gilt die Besdchleunigungen
 		debugR = new Box2DDebugRenderer(); // debugRenderer für die Anzeige der Boxen in Box2d
 		
 		new CreateWorld(welt,tiledMap); //Klasse, um die Physics der Objekte zu generieren 
 
 		spieler1 = new Player(welt, this); //Um den Atlas zu laden (siehe unten)
-		kiKoerper = new Player(welt,this);
+		enemy = new Enemy(welt,this);
 		
 		target = new B2dSteeringEntity(spieler1.getBody(),10);
-		entity = new B2dSteeringEntity(kiKoerper.getBody(),10);
+		entity = new B2dSteeringEntity(enemy.getBody(),10);
 		
-		pathFinder = new EnemyAgentComponent(kiKoerper.getBody(),spieler1.getBody());
+		pathFinder = new EnemyAgentComponent(enemy,spieler1,spielkamera, spiel);
 		
 		//Allgemeine Einstellung für SteeringBehavior
 		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(entity,target) 
@@ -114,6 +122,32 @@ public class Playscreen implements Screen, InputProcessor{
 	void update(float dt)
 	{
 		entity.update(dt);
+		pathFinder.update(dt);
+		
+		//Just for Tests
+		
+		
+		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+		
+			
+			Gdx.app.log("SpielerPositon (Playscreen)", "X " + spieler1.getX());
+			Gdx.app.log("SpielerPositon(Playscreen)", "Y " + spieler1.getY());
+			
+			Gdx.app.log("GegnerPositon(Playscreen)", "X " + enemy.getX());
+			Gdx.app.log("GegnerPositon(Playscreen)", "Y " + enemy.getY());
+		//Output ist zw. 1 bis 4 (????)
+			
+			
+		}
+		/*
+		if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+			Gdx.app.log("Trhe RealX"," " +spieler1.getrealX());
+			Gdx.app.log("Trhe RealY"," " +spieler1.getrealY());
+		}
+
+		*/
+		
+		
 	}
 	
 	@Override
@@ -121,6 +155,8 @@ public class Playscreen implements Screen, InputProcessor{
 		// TODO Auto-generated method stub		
 		update(delta);
 		spieler1.updatePlayer(delta);
+		enemy.updatePlayer(delta);
+		
 		
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -132,7 +168,7 @@ public class Playscreen implements Screen, InputProcessor{
 		
 		spiel.batch.begin();
 		spieler1.draw(spiel.batch);
-		kiKoerper.draw(spiel.batch);
+		enemy.draw(spiel.batch);
 		spiel.batch.end();
 		
 		welt.step(Gdx.graphics.getDeltaTime(), 6, 2);

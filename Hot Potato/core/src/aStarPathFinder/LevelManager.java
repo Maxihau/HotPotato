@@ -38,8 +38,7 @@ public static void loadLevel(String fileName)
 	
 	graph = GraphGenerator.generateGraph(tiledMap);
 	
-	Gdx.app.log("baum","baummm ");
-	
+
 	
 	}
 

@@ -44,13 +44,7 @@ public class AiSteeringState {
 		
 		entity.dispose();
 		
-		
-		
-		
-		
-		
-		
-	
+
 		
 		
 	}

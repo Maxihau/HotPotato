@@ -13,6 +13,8 @@ public class GraphGenerator {
 	{
 		
 		Array<Node> nodes = new Array<Node>();
+		
+		
 		TiledMapTileLayer tiles = (TiledMapTileLayer)map.getLayers().get(0);
 		//Nur dieses Layer??? 
 		//Ongoing !!!!!
@@ -79,7 +81,7 @@ public class GraphGenerator {
 			}
 		}
 		
-		//return new GraphImp(nodes);
+	
 		return new GraphImp(nodes);
 		
 		

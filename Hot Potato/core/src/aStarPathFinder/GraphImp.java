@@ -1,13 +1,14 @@
 package aStarPathFinder;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.*;
 import com.badlogic.gdx.utils.Array;
 
 
 public class GraphImp implements IndexedGraph<Node>{
-	private Array<Node> nodes = new Array<>();
-	int capacity;
+	protected Array<Node> nodes = new Array<>();
+	protected int capacity;
 	
 	public GraphImp()
 	{
@@ -19,39 +20,42 @@ public class GraphImp implements IndexedGraph<Node>{
 		this.capacity = capacity;
 	}
 	
-	public GraphImp(Array<Node> nodes) {
+	public GraphImp(Array<Node> nodes) 
+	{
         this.nodes = nodes;
 
-        // speedier than indexOf()
-        for (int x = 0; x < nodes.size; ++x) {
+       
+        for (int x = 0; x < nodes.size; ++x) 
+        {
             nodes.get(x).index = x;
         }
     }
 	
-	/*
-	public GraphImp (int capacity)
-	{
-		super(capacity);
-	}
-	
-	public GraphImp(Array<Node> nodes)
-	{
-		super(nodes);
-		this.nodes = nodes;
-	}	
-	*/
+
 	
 	public Node getNodeByXY(int x, int y)
 	{
 		int modX = x / LevelManager.tilePixelWidth;
 		int modY = y / LevelManager.tilePixelHeight;
 		
-		System.out.println(modX);
-		System.out.println(modY);
 		
-		//Wandelt die Pixel in Tiles (Kacheln) um
 		
-		return nodes.get(LevelManager.lvlTileWidth*modY+ modX);
+		
+		//Wandelt die Pixel in Knoten um
+		//Holt sich den Knoten aus dem Array "nodes" vom Graphen
+		
+		//Gdx.app.log("Knoten aus X und Y Eingabe(GraphImp)"," "+nodes.get(LevelManager.lvlTileWidth*modY+ modX));
+		//Es gibt 900 Knoten insgesamt und es sind verschiedene Knoten
+		//Problem bei der Suche irgendwie --> Troubleshooting 
+		Gdx.app.log("Knoten Array Länge"," "+nodes.size);
+		//Gdx.app.log("Knoten bei Random Position (Index) im Array"," "+nodes.get(561));
+		//Gdx.app.log("Knoten bei Random Position (Index) im Array"," "+nodes.get(88));
+		
+		//Gdx.app.log("TilePixelWidth (GraphImp)", " "+LevelManager.tilePixelWidth);
+		//Gdx.app.log("TilePixelHeight(GraphImp)", " "+LevelManager.tilePixelHeight);
+		
+		return nodes.get(modY+ modX);
+		
 	}
 	
 	
