@@ -1,25 +1,17 @@
-package entities;
+package SteeringBehavior;
 
 import com.badlogic.gdx.ai.steer.Steerable;
-import com.badlogic.gdx.ai.msg.Telegram;
-import com.badlogic.gdx.ai.msg.Telegraph;
-import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
-import com.badlogic.gdx.ai.steer.Limiter;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.utils.Location;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
-import aStarPathFinder.GraphPathImp;
-import aStarPathFinder.LevelManager;
-import aStarPathFinder.Node;
 import utils.SteeringUtils;
 
 
-public class B2dSteeringEntity implements Steerable<Vector2>, Telegraph{
+public class B2dSteeringEntity implements Steerable<Vector2>{
 
 	Body body;
 	boolean tagged;
@@ -256,11 +248,6 @@ public class B2dSteeringEntity implements Steerable<Vector2>, Telegraph{
 
 
 
-	@Override
-	public boolean handleMessage(Telegram msg) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	
 	

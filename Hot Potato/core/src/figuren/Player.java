@@ -113,28 +113,14 @@ public class Player extends Sprite{
 		
 	}
 	
-	/*
-	public float getrealX()
-	{
-		realX = (body.getPosition().x+getWidth()*2)*spiel.PPM;
-		
-		return realX;
-	}
+//Für EnemyAgentComponent, da die Nodes in "normalen" Pixeln sind X & Y und ncihtr die vom Body (1.0-1.5....
 	
-	public float getrealY()
-	{
-		realY = (body.getPosition().y+getWidth()*2)*spiel.PPM;
-		
-		return realY;
-	}
-	*/
-	
-	public float getBodyPosX()
+	public float GetBodyPosX()
 	{
 		return body.getPosition().x;
 	}
 	
-	public float getBodyPosY()
+	public float GetBodyPosY()
 	{
 		return body.getPosition().y;
 	}

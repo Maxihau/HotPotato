@@ -5,11 +5,13 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.*;
 import com.badlogic.gdx.utils.Array;
 
+import screens.HPotato;
+
 
 public class GraphImp implements IndexedGraph<Node>{
 	protected Array<Node> nodes = new Array<>();
 	protected int capacity;
-	
+	HPotato spiel;
 	public GraphImp()
 	{
 		super();
@@ -35,8 +37,8 @@ public class GraphImp implements IndexedGraph<Node>{
 	
 	public Node getNodeByXY(int x, int y)
 	{
-		int modX = x / LevelManager.tilePixelWidth;
-		int modY = y / LevelManager.tilePixelHeight;
+		int modX = (x / LevelManager.tilePixelWidth);
+		int modY = (y / LevelManager.tilePixelHeight);
 		
 		
 		
@@ -47,16 +49,23 @@ public class GraphImp implements IndexedGraph<Node>{
 		//Gdx.app.log("Knoten aus X und Y Eingabe(GraphImp)"," "+nodes.get(LevelManager.lvlTileWidth*modY+ modX));
 		//Es gibt 900 Knoten insgesamt und es sind verschiedene Knoten
 		//Problem bei der Suche irgendwie --> Troubleshooting 
-		Gdx.app.log("Knoten Array Länge"," "+nodes.size);
+		//Gdx.app.log("Knoten Array Länge (GraphImp)"," "+);
 		//Gdx.app.log("Knoten bei Random Position (Index) im Array"," "+nodes.get(561));
 		//Gdx.app.log("Knoten bei Random Position (Index) im Array"," "+nodes.get(88));
 		
 		//Gdx.app.log("TilePixelWidth (GraphImp)", " "+LevelManager.tilePixelWidth);
 		//Gdx.app.log("TilePixelHeight(GraphImp)", " "+LevelManager.tilePixelHeight);
 		
-		return nodes.get(modY+ modX);
+		
+		Gdx.app.log("mlvl tile Width"," "+LevelManager.lvlTileWidth);
+		Gdx.app.log("modY"," "+modY);
+		Gdx.app.log("modX"," "+modX);
+		Gdx.app.log("magic number"," "+(LevelManager.lvlTileWidth * modY + modX));
+		
+		return nodes.get(LevelManager.lvlTileWidth * modY + modX);
 		
 	}
+	
 	
 	
 	@Override

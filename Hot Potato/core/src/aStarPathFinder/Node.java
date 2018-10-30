@@ -27,18 +27,8 @@ public class Node{
 		connections.add(new ConnectionImp(this, toNode, cost));
 		//Verbindung von Knoten 1 zu Knoten 2 mit den dazugehörigen "Kosten" für die Bewegung der KI
 		
-	}	
-	
-	/*
-	private static class Indexer
-	{
-		private static int index = 0;
-		public static int getIndex()
-		{
-			return index++;
-		}
 	}
-	*/
+	
 	
 	
 	public static class Type 

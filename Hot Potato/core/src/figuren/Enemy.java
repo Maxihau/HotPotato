@@ -2,6 +2,8 @@ package figuren;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,6 +19,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import SteeringBehavior.EnemyBehavior;
+import SteeringBehavior.EnemyState;
 import screens.HPotato;
 import screens.Playscreen;
 public class Enemy extends Sprite{
@@ -44,9 +48,15 @@ public class Enemy extends Sprite{
 	private float stateTimer;
 	private boolean RUNNINGRechts;
 	private TextureRegion region;
-	private boolean besitzBombe;
+	public boolean bomb;
 	
 	int i = 0;
+	
+	public StateMachine<Enemy,EnemyState> stateMachine;
+	
+
+
+	
 	
 	
 	public Enemy(World world,Playscreen screen)
@@ -66,6 +76,8 @@ public class Enemy extends Sprite{
 		stateTimer = 0;
 		RUNNINGRechts = true;
 		region = figurSTANDING;
+		
+		bomb = true;
 		
 		
 		Array<TextureRegion> frames = new Array <TextureRegion>();
@@ -99,25 +111,34 @@ public class Enemy extends Sprite{
 		
 		
 		setPosition(75,200);
-	
-		
+
 		
 		bodyDef = new BodyDef();
 		FigurErstellen();
 		
 		
+		stateMachine = new DefaultStateMachine<Enemy,EnemyState>();
+		stateMachine.setInitialState(EnemyState.SEEK);
+		
+		
 		
 		
 	}
 	
-	public float getBodyPosX()
+
+	public float GetBodyPosX()
 	{
 		return body.getPosition().x;
 	}
 	
-	public float getBodyPosY()
+	public float GetBodyPosY()
 	{
 		return body.getPosition().y;
+	}
+	
+	public boolean IfBomb()
+	{
+		return bomb;
 	}
 	
 	
@@ -154,10 +175,15 @@ public class Enemy extends Sprite{
 		
 		
 	}
-	public void updatePlayer(float dt) {
+	public void updateEnemy(float dt) {
+		
 		setPosition(body.getPosition().x-getWidth()/2, body.getPosition().y-getHeight()/2);
-		}
-	
+		
+		//stateMachine.update();
+
+	}
+
+
 	public TextureRegion getFrame (float dt) 
 	{
 		

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -17,11 +18,13 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import SteeringBehavior.B2dSteeringEntity;
+import SteeringBehavior.EnemyBehavior;
+import SteeringBehavior.EnemyState;
 import aStarPathFinder.EnemyAgentComponent;
 import aStarPathFinder.LevelManager;
-import entities.B2dSteeringEntity;
+import aStarPathFinder.PathfindingDebugger;
 import entities.HotPotato;
-import entities.B2dSteeringEntity;
 import figuren.Enemy;
 import figuren.Player;
 import tools.CreateWorld;
@@ -50,6 +53,7 @@ public class Playscreen implements Screen, InputProcessor{
 	
 	LevelManager levelManager;
 	
+	PathfindingDebugger pfd;
 	
 	public Playscreen(HPotato spiel)	//Uebertragung der Eigenschaften der "Hauptklasse (MyGdxGame)" auf diese Klasse (Zum Rendern bsp.)
 	{
@@ -88,18 +92,31 @@ public class Playscreen implements Screen, InputProcessor{
 		spieler1 = new Player(welt, this); //Um den Atlas zu laden (siehe unten)
 		enemy = new Enemy(welt,this);
 		
-		target = new B2dSteeringEntity(spieler1.getBody(),10);
-		entity = new B2dSteeringEntity(enemy.getBody(),10);
 		
-		pathFinder = new EnemyAgentComponent(enemy,spieler1,spielkamera, spiel);
 		
+		//target = new B2dSteeringEntity(spieler1.getBody(),10);
+		//entity = new B2dSteeringEntity(enemy.getBody(),10);
+		
+		
+		
+		
+		pathFinder = new EnemyAgentComponent(enemy,spieler1, spiel);
+		pfd = new PathfindingDebugger();
+		PathfindingDebugger.setCamera(spielkamera);
+		PathfindingDebugger.drawPath(pathFinder.GetResultPath());
+		
+		
+		//enemyBehavior = new EnemyBehavior(enemy,spieler1,pathFinder.GetResultPath());
+		
+		
+		/*
 		//Allgemeine Einstellung für SteeringBehavior
-		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(entity,target) 
+		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(entity,target)
 				.setTimeToTarget(0.1f) 
 				.setArrivalTolerance(0.001f) 
 				.setDecelerationRadius(1f);
 			entity.setBehavior(arriveSB);
-		
+		*/
 		
 	}
 	
@@ -121,10 +138,17 @@ public class Playscreen implements Screen, InputProcessor{
 	
 	void update(float dt)
 	{
-		entity.update(dt);
+		//entity.update(dt);
+		
 		pathFinder.update(dt);
 		
+		//Doesn't work somehow
+		//enemyState.update(enemy);
+		
 		//Just for Tests
+		
+		
+
 		
 		
 		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
@@ -155,7 +179,7 @@ public class Playscreen implements Screen, InputProcessor{
 		// TODO Auto-generated method stub		
 		update(delta);
 		spieler1.updatePlayer(delta);
-		enemy.updatePlayer(delta);
+		enemy.updateEnemy(delta);
 		
 		
         Gdx.gl.glClearColor(1, 0, 0, 1);
